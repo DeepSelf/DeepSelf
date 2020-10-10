@@ -52,7 +52,18 @@ class ConceptCategory(models.Model):
     def __str__(self):
         return self.name
 
+class Company(models.Model):
+    
+    name = models.CharField(max_length=100)
+    competencies_score = models.FloatField(default=0.0)
+    life_quality_score = models.FloatField(default=0.0)
 
+    class Meta:
+        verbose_name = _("Entreprise")
+        verbose_name_plural = _("Entreprises")
+
+    def __str__(self):
+        return self.name
 
 
 class Concept(models.Model):
@@ -75,7 +86,8 @@ class Project(models.Model):
     description = models.TextField(max_length=2000)
     state = models.CharField(max_length=50, default="starting")
     values = models.ManyToManyField(Value, related_name="needs")
-    category = models.ManyToManyField(Category, related_name="contains")    
+    category = models.ManyToManyField(Category, related_name="contains")
+    company = models.ForeignKey(Company, null=True, on_delete=models.CASCADE)  
 
     class Meta:
         verbose_name = _("Projet")
@@ -113,6 +125,7 @@ class Collaborator(models.Model):
     pleasantness = models.FloatField(default=0.0)
     visited_concepts_list = models.ManyToManyField(Concept, related_name="explorers", through="ExplorationDate")
     recommended_concepts = models.ManyToManyField(Concept, related_name="pretenders")
+    company = models.ForeignKey(Company, null=True, on_delete=models.CASCADE)
     
 
     class Meta:
@@ -191,6 +204,8 @@ class Candidacy(models.Model):
 
     def __str__(self):
         return "{0} {1} candidate pour le rôle de {2} dans le projet {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.role.role_name, self.role.project.name)
+
+
 
 
 
