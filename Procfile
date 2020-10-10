@@ -1,1 +1,1 @@
-web: gunicorn deepself.wsgi
+web: gunicorn DeepSelf.wsgi
