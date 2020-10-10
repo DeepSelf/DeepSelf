@@ -22,6 +22,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    path('/', collaborator.views.home, name='home'),
     path('collab/', include('collaborator.urls')),
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
