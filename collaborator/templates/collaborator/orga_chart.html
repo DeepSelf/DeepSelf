@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>{{company.name}}: statistiques:</h1>
+
+<h4>Score de compétences: {{company.competencies_score}}</h4>
+<h4>Score de qualité de vie: {{company.life_quality_score}}</h4>
+
+{% endblock content %}

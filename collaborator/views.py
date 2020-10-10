@@ -18,7 +18,8 @@ def profile(request):
 
 @login_required
 def organizational_chart(request):
-    return redirect('home')
+    company = request.user.collaborator.company
+    return render(request, 'collaborator/orga_chart.html', locals())
 
 @login_required
 def development_modules(request):

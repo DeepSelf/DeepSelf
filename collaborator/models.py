@@ -87,7 +87,7 @@ class Project(models.Model):
     state = models.CharField(max_length=50, default="starting")
     values = models.ManyToManyField(Value, related_name="needs")
     category = models.ManyToManyField(Category, related_name="contains")
-    company = models.ForeignKey(Company, null=True, on_delete=models.CASCADE)  
+    company = models.ForeignKey(Company, null=True, related_name="projects", on_delete=models.CASCADE)  
 
     class Meta:
         verbose_name = _("Projet")
@@ -125,7 +125,7 @@ class Collaborator(models.Model):
     pleasantness = models.FloatField(default=0.0)
     visited_concepts_list = models.ManyToManyField(Concept, related_name="explorers", through="ExplorationDate")
     recommended_concepts = models.ManyToManyField(Concept, related_name="pretenders")
-    company = models.ForeignKey(Company, null=True, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, null=True, related_name="employees", on_delete=models.CASCADE)
     
 
     class Meta:
