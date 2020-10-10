@@ -19,10 +19,11 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
+import collaborator.views as col_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('/', collaborator.views.home, name='home'),
+    path('', col_views.home, name='home'),
     path('collab/', include('collaborator.urls')),
     path('login/', views.login_view, name="login"),
     path('logout/', views.logout_view, name="logout"),
