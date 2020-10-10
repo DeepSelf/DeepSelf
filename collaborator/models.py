@@ -190,7 +190,7 @@ class Candidacy(models.Model):
         verbose_name_plural = _("Candidatures")
 
     def __str__(self):
-        return self.name
+        return "{0} {1} candidate pour le rôle de {2} dans le projet {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.role.role_name, self.role.project.name)
 
 
 
