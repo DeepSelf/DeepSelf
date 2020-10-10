@@ -30,7 +30,8 @@ else:
     DEBUG = True
 
 ALLOWED_HOSTS = [
-    'deepself.herokuapp.com'
+    'deepself.herokuapp.com',
+    '127.0.0.1',
 ]
 
 
