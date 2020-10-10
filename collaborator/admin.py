@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Hobby, Value, Category, ConceptCategory, Concept, Project, Skill, Collaborator, ValueLevel, ExplorationDate, Role, Task, Candidacy
+from .models import Hobby, Value, Category, ConceptCategory, Concept, Project, Skill, Collaborator, ValueLevel, ExplorationDate, Role, Task, Candidacy, Company
 
 # Register your models here.
 
