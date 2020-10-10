@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>{{project.name}}</h1>
+
+<h3>Description du projet</h3>
+<p>{{project.description}}</p>
+<form method='POST' action="{% url 'my_project' project.id %}">
+    {% csrf_token %}
+    <textarea id="new_desc" name="new_desc">{{project.description}}</textarea>
+    <input type="submit" label="modifier">
+</form>
+
+<h4>Membres pouvant être ajoutés</h4>
+<ul id="others_ul">
+    {% for member in other_members %}
+        <li>{{member.user.first_name}} {{member.user.last_name}}</li>
+    {% endfor %}
+</ul>
+
+<h4>Etat en cours du projet:</h4>
+<p>{{project.state}}</p>
+
+<h4>Valeurs du projet</h4>
+<form method='POST' action="{% url 'change_values' project_id %}">
+    {% csrf_token %}
+    {% for value in values %}
+        <input type='checkbox' id="check_{{value.id}}" name="{{value.id}}" {% if value in project.values.all %}checked{% endif %}>
+        <label for="check_{{value.id}}">{{value.name}}</label>
+    {% endfor %}
+    <input type="submit" label="modifier">
+</form>
+
+<h4>Demande de budget</h4>
+<form method='POST' action="{% url 'ask_money' project_id %}">
+    {% csrf_token %}
+    <input type='number' name="budget" label="budget demandé">
+    <input type='submit' label="modifier">
+</form>
+
+<h3>Membres du projet</h4>
+<ul id='members_ul'>
+    {% for role in roles %}
+        <li><a href="{% url 'show_member' role.id %}">{{role.collaborator.user.first_name}} {{role.collaborator.user.last_name}} - {{role.role_name}}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

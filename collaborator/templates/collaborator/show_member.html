@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>{{role.collaborator.user.first_name}} {{role.collaborator.user.last_name}}</h1>
+<h2>{{role.role_name}} dans le projet {{role.project.name}}</h2>
+
+<h4>Tâches:</h4>
+<ul id="tasks_ul">
+    {% for task in tasks %}
+        <li>{{task.description}}</li>
+    {% endfor %}
+</ul>
+
+<button>Contacter en privé</button>
+
+<h4>Tâches dans l'entreprise:</h4>
+<ul id="other_tasks_ul">
+    {% for task in all_tasks %}
+        <li>{{task.description}}</li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

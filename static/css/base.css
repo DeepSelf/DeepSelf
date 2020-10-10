@@ -1,0 +1,92 @@
+div.ui.footer {
+  /* position: fixed; */
+  /* width: 100vw;
+  position: absolute;
+  bottom: 0; */
+  width: 100vw;
+  clear: both;
+  position: relative;
+  margin-top: -80px;
+}
+
+.login-form {
+  max-width: 40vw;
+  min-width: 500px;
+  margin: auto;
+}
+
+#big_five {
+  max-width: 50vw;
+  min-width: 500px;
+}
+
+#big_five > h1,
+#projects > h1,
+#values > h1,
+#skills > h1,
+#deepself_score h1 {
+  width: 100vw;
+  text-align: center;
+}
+
+.buttons-container {
+  text-align: center;
+  display: flex !important;
+  justify-content: space-around;
+}
+
+.container.home {
+  text-align: center;
+  display: flex !important;
+  justify-content: space-around;
+}
+
+.home > div {
+  max-width: 95vw;
+}
+
+.home > .row > div {
+  height: 100%;
+}
+
+.title {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title h1 {
+  font-size: 5rem !important;
+}
+
+#content {
+  margin: 10px;
+  min-height: calc(100vh - 145px);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: right;
+  padding: 10px;
+  position: absolute;
+  right: 0;
+  z-index: 999;
+}
+
+.profile img {
+  border: 1px solid black;
+  margin-left: 5px;
+}
+
+#general_infos {
+  display: inline-flex;
+}
+
+#general_infos .image {
+  border: 1px solid black;
+  padding: 5px;
+}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="ui login-form">
+  <h1>Connexion</h1>
+
+  {% if error %}
+  <p><strong>Utilisateur inconnu ou mauvais mot de passe</strong></p>
+  {% endif %} {% if user.is_authenticated %}
+  <p>Vous êtes connecté {{user.first_name}} {{user.last_name}}</p>
+  {% else %}
+  <form method="POST" action="{% url 'login' %}" class="ui form">
+    {% csrf_token %} {{form.as_p}}
+    <input class="ui primary button" type="submit" value="Se connecter" />
+  </form>
+</div>
+{% endif %} {% endblock content %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<button><a href="#">toile</a></button>
+
+<div id="recents_div">
+    <h2>Voici les modules que vous avez visités récemment:</h2>
+    <ul id="recents_ul">
+        {% for module in recents %}
+            <li>
+                <h4>{{module.concept.name}}</h4>
+                <p>{{module.concept.description}}</p>
+            </li>
+        {% empty %}
+            <li><h4>Vous n'avez rien visité récemment</h4></li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="recommended_div">
+    <h2>Nous vous recommandons:</h2>
+    <ul id="recommended_ul">
+    {% for module in collab.recommended_concepts.all %}
+        <li>
+            <h4>{{module.name}}</h4>
+            <p>{{module.description}}</p>
+        </li>
+    {% empty %}
+        <li><h4>Vous n'avez aucune recommandation</h4></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<h2>Autres modules:</h2>
+{% for category in categories %}
+<div class="category_div">
+    <h3>{{category.name}}</h3>
+    <ul class="category_concepts">
+        {% for concept in category.contains.all %}
+                <li{% if concept in recents %} class="recents"{% endif %}{% if concept in collab.recommended_concepts %} class="recommended"{% endif %}>
+                    <h4>{{concept.name}}</h4>
+                    <p>{{concept.description}}</p>
+                </li>
+        {% empty %}
+            <li><h4>Vous n'avez aucun module à voir dans cette catégorie</h4></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+
+{% endblock content %}

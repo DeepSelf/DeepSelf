@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<form method="GET" action="{% url 'other_projects' %}">
+    {{form.as_p}}
+    <input type="submit"/>
+</form>
+
+<ul>
+    {% for project in projects_whithout %}
+        <li><a href="{% url 'other_project' project.id %}">{{project.name}} - {{project.description}}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

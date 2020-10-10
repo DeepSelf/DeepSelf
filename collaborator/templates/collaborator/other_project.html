@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<h1>{{project.name}}</h1>
+
+<h3>Description du projet</h3>
+<p>{{project.description}}</p>
+
+<button>Je candidate</button>
+<form method='POST' action="{% url 'other_project' project.id %}">
+    {% csrf_token %}
+    <label for="role-select">Quel rôle souhaiteriez-vous occuper dans ce projet?</label>
+    <select name="wanted_role" id="role-select" required>
+        {% for role in free_roles %}
+        <option value="{{role.id}}">{{role.role_name}}</option>
+        {% endfor %}
+    </select>
+    <label for="candidacy-description">Quelle est votre motivation?</label>
+    <textarea id="candidacy-description" name="description"></textarea>
+    <input type="submit" label="Valider"/>
+</form>
+
+<h4>Etat en cours du projet:</h4>
+<p>{{project.state}}</p>
+
+<h4>Valeurs du projet</h4>
+<ul id='values_id'>
+    {% for value in project.values.all %}
+        <li>{{value.name}}</li>
+    {% endfor %}
+</ul>
+
+
+<h3>Membres du projet</h4>
+<ul id='members_ul'>
+    {% for role in roles %}
+        <li><a href="{% url 'show_member' role.id %}">{{role.collaborator.user.first_name}} {{role.collaborator.user.last_name}} - {{role.role_name}}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

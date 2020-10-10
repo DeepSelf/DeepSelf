@@ -1,0 +1,101 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="ui" id="profile_picture">
+  <img class="ui medium circular image" src="" />
+</div>
+
+<div class="ui" id="general_infos">
+  <img class="ui small image" src="{% static 'pictures/user.png' %}" />
+  <!-- <h2>Informations générales</h2> -->
+  <ul class="ui" id="global_infos_ul">
+    <li>{{collab.user.first_name}} {{collab.user.last_name}}</li>
+    <li>{{collab.job}}</li>
+    <li>{{collab.arrival_date}}</li>
+    <li>
+      centres d'intérêt:
+      <ul class="ui" id="hobbies_list">
+        {% for hobby in collab.hobbies.all %} {{hobby.name}} {% endfor %}
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui" id="projects">
+  <h1>Projets</h1>
+  <ul class="ui" id="projects_list">
+    {% for project in collab.projects.all %}
+    <li>
+      <div class="project_name">{{project.name}}</div>
+      <div class="project_role">{{project.role.name}}</div>
+      <div class="project_description">{{project.description|truncatechars:200}}</div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui" id="big_five">
+  <h1>Personnalité</h1>
+  <div class="ui progress" data-percent="{{collab.extroversion}}">
+    <div class="bar" style="width: {{collab.extroversion}}%">
+      <div class="progress">{{collab.extroversion}}</div>
+    </div>
+    <div class="label">Extraversion</div>
+  </div>
+  <div class="ui progress" data-percent="{{collab.conscientiousness}}">
+    <div class="bar" style="width: {{collab.conscientiousness}}%">
+      <div class="progress">{{collab.conscientiousness}}</div>
+    </div>
+    <div class="label">conscienciosité</div>
+  </div>
+  <div class="ui progress" data-percent="{{collab.neurotism}}">
+    <div class="bar" style="width: {{collab.neurotism}}%">
+      <div class="progress">{{collab.neurotism}}</div>
+    </div>
+    <div class="label">neurotisme</div>
+  </div>
+  <div class="ui progress" data-percent="{{collab.opening}}">
+    <div class="bar" style="width: {{collab.opening}}%">
+      <div class="progress">{{collab.opening}}</div>
+    </div>
+    <div class="label">ouverture</div>
+  </div>
+  <div class="ui progress" data-percent="{{collab.pleasantness}}">
+    <div class="bar" style="width: {{collab.pleasantness}}%">
+      <div class="progress">{{collab.pleasantness}}</div>
+    </div>
+    <div class="label">agréabilité</div>
+  </div>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui" id="values">
+  <h1>Valeurs</h1>
+  <ul class="ui" id="values_list">
+    {% for value in collab.values.all %}
+    <li>{{value.name}}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui" id="skills">
+  <h1>Compétences</h1>
+  <ul class="ui" id="skills_list">
+    {% for skill in collab.skills.all %}
+    <li>{{skill.name}}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="ui divider"></div>
+
+<div class="ui" id="deepself_score">
+  <h1>Score DeepSelf</h1>
+</div>
+
+{% endblock content %}
