@@ -88,3 +88,11 @@ class TaskAdmin(admin.ModelAdmin):
 class CandidacyAdmin(admin.ModelAdmin):
     list_display   = ('role','collaborator', 'description')
     ordering       = ('id', )
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display   = ('name',)
+    ordering       = ('id', )
+    search_fields  = ('name',)
+
