@@ -10,7 +10,7 @@
 <p>{{project.description}}</p>
 
 <button>Je candidate</button>
-<form method='POST' action="{% url 'other_project' project.id %}">
+<form method='POST' action="{% url 'project' project.id %}">
     {% csrf_token %}
     <label for="role-select">Quel rôle souhaiteriez-vous occuper dans ce projet?</label>
     <select name="wanted_role" id="role-select" required>

@@ -10,7 +10,7 @@
     <h1>Voici vos projets</h1>
     <ul id="your_projects_ul">
         {% for project in collab.projects.all %}
-            <li><a href="{% url 'my_project' project.id %}">{{project.name}}</a></li>
+            <li><a href="{% url 'project' project.id %}">{{project.name}}</a></li>
         {% endfor %}
     </ul>
 </div>

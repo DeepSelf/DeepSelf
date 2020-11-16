@@ -8,37 +8,59 @@ from .forms import CategoryFilterForm, ProjectForm
 from datetime import date, timedelta
 
 def home(request):
+    '''
+    returns home page
+    '''
+
     user = request.user
     return render(request, 'collaborator/home.html', locals())
 
 @login_required
 def profile(request):
+    '''
+    returns the profile page of the connected collaborator
+    '''
+
     collab = request.user.collaborator
     return render(request, 'collaborator/profile.html', locals())
 
 @login_required
 def organizational_chart(request):
+    '''
+    returns the organizational chart of the connected collaborator's company
+    '''
+
     company = request.user.collaborator.company
     return render(request, 'collaborator/orga_chart.html', locals())
 
 @login_required
 def development_modules(request):
+    '''
+    returns the page with recents modules, recommanded modules, and other modules
+    '''
+
     collab = request.user.collaborator
-    recents = ExplorationDate.objects.filter(collaborator=collab, date__gte=date.today()-timedelta(days=5))
+    recents = ExplorationDate.objects.filter(collaborator=collab, date__gte=date.today()-timedelta(days=5)) # Gets the recent projects
     categories = ConceptCategory.objects.all()
     return render(request, 'collaborator/dev_mods.html', locals())
 
 @login_required
 def collective_initiative(request):
+    '''
+    returns the page with the projects the connected collaborator is participating to
+    '''
+
     collab = request.user.collaborator
     return render(request, 'collaborator/my_projects.html', locals())
 
 @login_required
 def other_projects(request):
+    '''
+    returns the page with the list of the projects in the connected collaborator's company in which the connected collaborator is not implicated
+    '''
+
     form = CategoryFilterForm(request.GET or None)
-    if form.is_valid():
-        print('coucou')
-        print(form.cleaned_data)
+    if form.is_valid(): # This code portion gets the selected categories and filters the projects' list with those categories
         selected_categories = []
         for category in Category.objects.all():
             if form.cleaned_data['category'+str(category.id)]:
@@ -56,6 +78,10 @@ def other_projects(request):
 
 @login_required
 def new_project(request):
+    '''
+    returns a page with a form to create a new project
+    '''
+
     form = ProjectForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
@@ -74,11 +100,15 @@ def new_project(request):
     return render(request, 'collaborator/new_project.html', locals())
 
 @login_required
-def my_project(request, project_id=1):
+def project(request, project_id=1):
+    '''
+    returns a page presenting the project with id project_id
+    '''
+
     project = Project.objects.get(id=project_id)
-    if not(request.user.collaborator in project.members.all()):
-        return redirect('other_project', project_id)
-    else:
+    if request.user.collaborator in project.members.all():
+        # If the connected collaborator is member of this project, he can change the description, the project's values,
+        # ask fund for the project, see the role of each member and see more infos about the project
         values = Value.objects.all()
         roles = Role.objects.filter(project=project)
         other_members = Collaborator.objects.exclude(user__in = [member.user for member in project.members.all()])
@@ -86,13 +116,8 @@ def my_project(request, project_id=1):
             project.description = request.POST['new_desc']
             project.save()
         return render(request, 'collaborator/my_project.html', locals())
-
-@login_required
-def other_project(request, project_id=1):
-    project = Project.objects.get(id=project_id)
-    if request.user.collaborator in project.members.all():
-        return redirect('my_project', project_id)
     else:
+        # If the connected collaborator is not member of the project, he can ask to become member of the project
         free_roles = Role.objects.filter(project=project, collaborator__isnull=True)
         if request.method == 'POST':
             role = Role.objects.get(id=request.POST['wanted_role'])
@@ -102,6 +127,10 @@ def other_project(request, project_id=1):
         
 @login_required
 def change_values(request, project_id=1):
+    '''
+    changes the values of the project with id project_id then returns to page project
+    '''
+
     project = Project.objects.get(id=project_id)
     if request.method == 'POST':
         for value in Value.objects.all():
@@ -110,18 +139,26 @@ def change_values(request, project_id=1):
             else:
                 project.values.remove(value)
         project.save()
-    return redirect('my_project', project_id)
+    return redirect('project', project_id)
 
 @login_required
 def ask_money(request, project_id=1):
+    '''
+    creates a fund request for the project with id project_id then returns to page project
+    '''
+
     project = Project.objects.get(id=project_id)
     if request.method == 'POST':
         print("requête envoyée")
         print(request.POST['budget'])
-    return redirect('my_project', project_id)
+    return redirect('project', project_id)
 
 @login_required
 def show_member(request, role_id=1):
+    '''
+    returns a page which shows the role of the member in the project of role with id role_id
+    '''
+    
     role = Role.objects.get(id=role_id)
     tasks = Task.objects.filter(role=role)
     all_roles = Role.objects.filter(collaborator=role.collaborator)

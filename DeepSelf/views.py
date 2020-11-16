@@ -5,6 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm
 
 def login_view(request):
+    '''
+    returns a page wich allows collaborator to get connected
+    '''
+
     error = False
 
     if request.method == "POST":
@@ -12,10 +16,10 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password"]
-            user = authenticate(username=username, password=password)  # Nous vérifions si les données sont correctes
-            if user:  # Si l'objet renvoyé n'est pas None
-                login(request, user)  # nous connectons l'utilisateur
-            else: # sinon une erreur sera affichée
+            user = authenticate(username=username, password=password)  # We verify if the sent data is correct
+            if user:
+                login(request, user)
+            else:
                 error = True
     else:
         form = LoginForm()
@@ -26,6 +30,10 @@ def register(request):
     pass
 
 def logout_view(request):
+    '''
+    logout the user then returns to the login view
+    '''
+    
     logout(request)
     return redirect('login')
     
