@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div id="chat">
+    <div id="former_messages"></div>
+    <div id="new_answers">
+        <ul id="new_answers_ul"></ul>
+        <button id="send_button">Envoyer</button>
+    </div>
+</div>
+
+<script src="{% static 'js/chatbot.js' %}"></script>
+{% endblock content %}

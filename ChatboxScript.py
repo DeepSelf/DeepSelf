@@ -7,14 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1OuvVmsyexb62p7LtvOywJUMFK4UjXGtH
 """
 
-import nltk
-import random
-import string
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np 
-import warnings
-warnings.filterwarnings('ignore')
 
 """# Chatbox For IA for tomorrow
 

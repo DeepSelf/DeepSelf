@@ -20,7 +20,6 @@ class Hobby(models.Model):
 class Value(models.Model):
     
     name = models.CharField(max_length=100)
-    level = models.FloatField(default=0.0)
 
     class Meta:
         verbose_name = _("Valeur")
@@ -100,6 +99,7 @@ class Project(models.Model):
 class Skill(models.Model):
     
     name = models.CharField(max_length=100)
+    color = models.CharField(max_length=7, default='#ffffff')
 
     class Meta:
         verbose_name = _("Compétence")
@@ -107,6 +107,7 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 class Collaborator(models.Model):
@@ -117,7 +118,7 @@ class Collaborator(models.Model):
     hobbies = models.ManyToManyField(Hobby, related_name="hobbies")
     projects = models.ManyToManyField(Project, related_name="members", through="Role")
     value_level = models.ManyToManyField(Value, related_name="owner", through="ValueLevel")
-    skills = models.ManyToManyField(Skill, related_name="can")
+    skill_level = models.ManyToManyField(Skill, related_name="can", through="SkillLevel")
     extroversion = models.FloatField(default=0.0)
     conscientiousness = models.FloatField(default=0.0)
     neurotism = models.FloatField(default=0.0)
@@ -148,6 +149,20 @@ class ValueLevel(models.Model):
 
     def __str__(self):
         return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.value_level, self.value.name)
+
+
+class SkillLevel(models.Model):
+    skill_level = models.FloatField(default=0.0)
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    collaborator = models.ForeignKey(Collaborator, on_delete=models.CASCADE)    
+
+    class Meta:
+        verbose_name = _("SkillLevel")
+        verbose_name_plural = _("SkillLevels")
+
+    def __str__(self):
+        return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.skill_level, self.skill.name)
+
 
 
 class ExplorationDate(models.Model):

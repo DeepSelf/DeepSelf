@@ -1,0 +1,10 @@
+#projects_list {
+    list-style: none;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#projects_list button {
+    width: 100%;
+    margin: 2px;
+}
