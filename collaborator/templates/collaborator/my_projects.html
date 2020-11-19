@@ -9,7 +9,7 @@
 <div id="your_projects">
     <h1>Voici vos projets</h1>
     <ul id="your_projects_ul">
-        {% for project in collab.projects.all %}
+        {% for project in collab.projects.distinct %}
             <li><a href="{% url 'project' project.id %}">{{project.name}}</a></li>
         {% endfor %}
     </ul>
