@@ -28,9 +28,16 @@
 <div class="ui" id="projects">
   <h1>Projets</h1>
   <ul class="ui" id="projects_list" style="list-style: none; padding-left: 50px; padding-right: 50px;">
-    {% for project in collab.projects.distinct %}
+    {% for project, roles_list in dico_projects.items %}
     <li>
-      <button class="ui button" style="width: 100%; margin: 2px;">{{project.name}}</button>
+      <a href="{% url 'project' project.id %}">
+        <button class="ui button" style="width: 100%; margin: 2px;">
+          <strong>{{project.name}}</strong>
+          {% for role in roles_list%}
+          - {{role}}
+          {% endfor %}
+        </button>
+      </a>
     </li>
     {% endfor %}
   </ul>

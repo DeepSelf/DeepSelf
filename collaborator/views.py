@@ -22,6 +22,13 @@ def profile(request):
     '''
 
     collab = request.user.collaborator
+    roles = Role.objects.filter(collaborator=collab)
+    dico_projects = {}
+    for role in roles:
+        if role.project in dico_projects.keys():
+            dico_projects[role.project] += [role.role_name]
+        else:
+            dico_projects[role.project] = [role.role_name]
     value_levels = ValueLevel.objects.filter(collaborator=collab)
     values = [value.name for value in collab.value_level.all()]
     levels = [value_level.value_level for value_level in value_levels]
