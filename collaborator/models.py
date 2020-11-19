@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from colorfield.fields import ColorField
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -79,6 +80,18 @@ class Concept(models.Model):
     def __str__(self):
         return self.name
 
+class Value(models.Model):
+    
+    name = models.CharField(max_length=100)
+    color = ColorField(default='#FF0000')
+
+    class Meta:
+        verbose_name = _("Valeur")
+        verbose_name_plural = _("Valeurs")
+
+    def __str__(self):
+        return self.name
+
 
 class Project(models.Model):
     name = models.CharField(max_length=200)
@@ -96,10 +109,23 @@ class Project(models.Model):
         return self.name
 
 
+class Personnality(models.Model):
+    
+    name = models.CharField(max_length=100)
+    color = ColorField(default='#FF0000')
+
+    class Meta:
+        verbose_name = _("Trait de personnalité")
+        verbose_name_plural = _("Traits de personnalité")
+
+    def __str__(self):
+        return self.name
+
+
 class Skill(models.Model):
     
     name = models.CharField(max_length=100)
-    color = models.CharField(max_length=7, default='#ffffff')
+    color = ColorField(default='#FF0000')
 
     class Meta:
         verbose_name = _("Compétence")
@@ -117,13 +143,9 @@ class Collaborator(models.Model):
     arrival_date = models.DateField(auto_now=True)
     hobbies = models.ManyToManyField(Hobby, related_name="hobbies")
     projects = models.ManyToManyField(Project, related_name="members", through="Role")
+    personnality_level = models.ManyToManyField(Personnality, related_name="is_caracterised_by", through="PersonnalityLevel")
     value_level = models.ManyToManyField(Value, related_name="owner", through="ValueLevel")
     skill_level = models.ManyToManyField(Skill, related_name="can", through="SkillLevel")
-    extroversion = models.FloatField(default=0.0)
-    conscientiousness = models.FloatField(default=0.0)
-    neurotism = models.FloatField(default=0.0)
-    opening = models.FloatField(default=0.0)
-    pleasantness = models.FloatField(default=0.0)
     visited_concepts_list = models.ManyToManyField(Concept, related_name="explorers", through="ExplorationDate")
     recommended_concepts = models.ManyToManyField(Concept, related_name="pretenders")
     company = models.ForeignKey(Company, null=True, related_name="employees", on_delete=models.CASCADE)
@@ -144,8 +166,8 @@ class ValueLevel(models.Model):
     collaborator = models.ForeignKey(Collaborator, on_delete=models.CASCADE)    
 
     class Meta:
-        verbose_name = _("ValueLevel")
-        verbose_name_plural = _("ValueLevels")
+        verbose_name = _("Niveau de Valeur")
+        verbose_name_plural = _("Niveaux de Valeurs")
 
     def __str__(self):
         return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.value_level, self.value.name)
@@ -157,12 +179,24 @@ class SkillLevel(models.Model):
     collaborator = models.ForeignKey(Collaborator, on_delete=models.CASCADE)    
 
     class Meta:
-        verbose_name = _("SkillLevel")
-        verbose_name_plural = _("SkillLevels")
+        verbose_name = _("Niveau de Compétence")
+        verbose_name_plural = _("Niveaux de Compétences")
 
     def __str__(self):
         return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.skill_level, self.skill.name)
 
+
+class PersonnalityLevel(models.Model):
+    personnality_level = models.FloatField(default=0.0)
+    personnality = models.ForeignKey(Personnality, on_delete=models.CASCADE)
+    collaborator = models.ForeignKey(Collaborator, on_delete=models.CASCADE)    
+
+    class Meta:
+        verbose_name = _("Niveau de Trait de personnalité")
+        verbose_name_plural = _("Niveaux de Traits de personnalité")
+
+    def __str__(self):
+        return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.personnality_level, self.personnality.name)
 
 
 class ExplorationDate(models.Model):

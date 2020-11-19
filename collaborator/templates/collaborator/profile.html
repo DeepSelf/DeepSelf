@@ -26,7 +26,7 @@
 <div class="ui divider"></div>
 
 <div class="ui" id="projects">
-  <h1>Projets</h1>
+  <h2>Projets</h2>
   <ul class="ui" id="projects_list" style="list-style: none; padding-left: 50px; padding-right: 50px;">
     {% for project, roles_list in dico_projects.items %}
     <li>
@@ -46,43 +46,21 @@
 <div class="ui divider"></div>
 
 <div class="ui" id="big_five">
-  <h1>Personnalité</h1>
-  <div class="ui progress" data-percent="{{collab.extroversion}}">
-    <div class="bar" style="width: {{collab.extroversion}}%; background-color: red">
-      <div class="progress">{{collab.extroversion}}</div>
+  <h2>Personnalité</h2>
+  {% for personnality_level in personnality_levels %}
+    <div class="ui progress" data-percent="{{personnality_level.personnality_level}}">
+    <div class="bar" style="width: {{personnality_level.personnality_level}}%; background-color: {{personnality_level.personnality.color}}">
+      <div class="progress">{{personnality_level.personnality_level}}</div>
     </div>
-    <div class="label">Extraversion</div>
-  </div>
-  <div class="ui progress" data-percent="{{collab.conscientiousness}}">
-    <div class="bar" style="width: {{collab.conscientiousness}}%; background-color: blue">
-      <div class="progress">{{collab.conscientiousness}}</div>
+    <div class="label">{{personnality_level.personnality.name}}</div>
     </div>
-    <div class="label">conscienciosité</div>
-  </div>
-  <div class="ui progress" data-percent="{{collab.neurotism}}">
-    <div class="bar" style="width: {{collab.neurotism}}%; background-color: green">
-      <div class="progress">{{collab.neurotism}}</div>
-    </div>
-    <div class="label">neurotisme</div>
-  </div>
-  <div class="ui progress" data-percent="{{collab.opening}}">
-    <div class="bar" style="width: {{collab.opening}}%; background-color: orange">
-      <div class="progress">{{collab.opening}}</div>
-    </div>
-    <div class="label">ouverture</div>
-  </div>
-  <div class="ui progress" data-percent="{{collab.pleasantness}}">
-    <div class="bar" style="width: {{collab.pleasantness}}%; background-color: purple">
-      <div class="progress">{{collab.pleasantness}}</div>
-    </div>
-    <div class="label">agréabilité</div>
-  </div>
+  {% endfor %}
 </div>
 
 <div class="ui divider"></div>
 
 <div class="ui" id="values">
-  <h1>Valeurs</h1>
+  <h2>Valeurs</h2>
   <div id="values_container" style="width:55%">
     <canvas id="values_chart"></canvas>
 
@@ -93,9 +71,7 @@
           data: {
             datasets: [{
               data: {{ levels|safe }},
-              backgroundColor: [
-                '#90EE90', '#ADD8E6', '#9370DB', '#FA8072', '#FF7F50', '#F0E68C'
-              ],
+              backgroundColor: {{ colors|safe }},
               label: 'Valeurs'
             }],
             labels: {{ values|safe }}
@@ -119,25 +95,21 @@
 <div class="ui divider"></div>
 
 <div class="ui" id="skills">
-  <h1>Compétences</h1>
-  <ul class="ui" id="skills_list" style="list-style: none; padding: 0; width: 50%">
-    {% for skill_level in skill_levels %}
-    <li>
-      <div class="ui progress" data-percent="{{skill_level.skill_level}}">
-      <div class="bar" style="width: {{skill_level.skill_level}}%; background-color: {{skill_level.skill.color}}">
-        <div class="progress">{{skill_level.skill_level}}</div>
-      </div>
-      <div class="label">{{skill_level.skill.name}}</div>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
+  <h2>Compétences</h2>
+  {% for skill_level in skill_levels %}
+    <div class="ui progress" data-percent="{{skill_level.skill_level}}">
+    <div class="bar" style="width: {{skill_level.skill_level}}%; background-color: {{skill_level.skill.color}}">
+      <div class="progress">{{skill_level.skill_level}}</div>
+    </div>
+    <div class="label">{{skill_level.skill.name}}</div>
+    </div>
+  {% endfor %}
 </div>
 
 <div class="ui divider"></div>
 
 <div class="ui" id="deepself_score">
-  <h1>Score DeepSelf</h1>
+  <h2>Score DeepSelf</h2>
 </div>
 
 

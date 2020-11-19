@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Hobby, Value, Category, ConceptCategory, Concept, Project, Skill, Collaborator, ValueLevel, ExplorationDate, Role, Task, Candidacy, Company, SkillLevel
+from .models import Hobby, Value, Category, ConceptCategory, Concept, Project, Skill, Collaborator, ValueLevel, ExplorationDate, Role, Task, Candidacy, Company, SkillLevel, Personnality, PersonnalityLevel
 
 # Register your models here.
 
@@ -15,6 +15,12 @@ class HobbyAdmin(admin.ModelAdmin):
 
 @admin.register(Value)
 class ValueAdmin(admin.ModelAdmin):
+    list_display   = ('name',)
+    ordering       = ('id', )
+    search_fields  = ('name',)
+
+@admin.register(Personnality)
+class PersonnalityAdmin(admin.ModelAdmin):
     list_display   = ('name',)
     ordering       = ('id', )
     search_fields  = ('name',)
@@ -59,6 +65,10 @@ class SkillLevelAdmin(admin.ModelAdmin):
     list_display   = ('collaborator', 'skill', 'skill_level')
     ordering       = ('id', )
 
+@admin.register(PersonnalityLevel)
+class PersonnalityLevelAdmin(admin.ModelAdmin):
+    list_display   = ('collaborator', 'personnality', 'personnality_level')
+    ordering       = ('id', )
 
 @admin.register(Collaborator)
 class CollaboratorAdmin(admin.ModelAdmin):

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
-from .models import Collaborator, Project, Value, Role, Task, Category, Concept, ConceptCategory, ExplorationDate, Candidacy, ValueLevel, SkillLevel
+from .models import Collaborator, Project, Value, Role, Task, Category, Concept, ConceptCategory, ExplorationDate, Candidacy, ValueLevel, SkillLevel, PersonnalityLevel
 from django.contrib.auth.decorators import login_required
 from .forms import CategoryFilterForm, ProjectForm
 from datetime import date, timedelta
@@ -32,7 +32,9 @@ def profile(request):
     value_levels = ValueLevel.objects.filter(collaborator=collab)
     values = [value.name for value in collab.value_level.all()]
     levels = [value_level.value_level for value_level in value_levels]
+    colors = [value.color for value in collab.value_level.all()]
     skill_levels = SkillLevel.objects.filter(collaborator=collab)
+    personnality_levels = PersonnalityLevel.objects.filter(collaborator=collab)
     print(skill_levels)
     return render(request, 'collaborator/profile.html', locals())
 
