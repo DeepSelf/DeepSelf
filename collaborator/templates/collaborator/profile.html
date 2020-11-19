@@ -27,11 +27,10 @@
 
 <div class="ui" id="projects">
   <h1>Projets</h1>
-  <ul class="ui" id="projects_list">
+  <ul class="ui" id="projects_list" style="list-style: none; padding-left: 50px; padding-right: 50px;">
     {% for project in collab.projects.distinct %}
     <li>
-      <button class="ui button">{{project.name}}
-      </button>
+      <button class="ui button" style="width: 100%; margin: 2px;">{{project.name}}</button>
     </li>
     {% endfor %}
   </ul>
@@ -134,6 +133,5 @@
   <h1>Score DeepSelf</h1>
 </div>
 
-<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}" />
 
 {% endblock content %}
