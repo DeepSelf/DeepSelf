@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Hobby, Value, Category, ConceptCategory, Concept, Project, Skill, Collaborator, ValueLevel, ExplorationDate, Role, Task, Candidacy, Company, SkillLevel, Personnality, PersonnalityLevel
+from .models import Hobby, Value, Category, ConceptCategory, Concept, Project, Skill, Collaborator, ValueLevel, ExplorationDate, Role, Task, Candidacy, Company, SkillLevel, Personnality, PersonnalityLevel, UnderPersonnality, UnderPersonnalityLevel, UnderSkill, UnderSkillLevel
 
 # Register your models here.
 
@@ -22,6 +22,12 @@ class ValueAdmin(admin.ModelAdmin):
 @admin.register(Personnality)
 class PersonnalityAdmin(admin.ModelAdmin):
     list_display   = ('name',)
+    ordering       = ('id', )
+    search_fields  = ('name',)
+
+@admin.register(UnderPersonnality)
+class UnderPersonnalityAdmin(admin.ModelAdmin):
+    list_display   = ('name','mother_personnality')
     ordering       = ('id', )
     search_fields  = ('name',)
 
@@ -60,14 +66,30 @@ class SkillAdmin(admin.ModelAdmin):
     ordering       = ('id', )
     search_fields  = ('name',)
 
+@admin.register(UnderSkill)
+class UnderSkillAdmin(admin.ModelAdmin):
+    list_display   = ('name','mother_skill')
+    ordering       = ('id', )
+    search_fields  = ('name',)
+
 @admin.register(SkillLevel)
 class SkillLevelAdmin(admin.ModelAdmin):
     list_display   = ('collaborator', 'skill', 'skill_level')
     ordering       = ('id', )
 
+@admin.register(UnderSkillLevel)
+class UnderSkillLevelAdmin(admin.ModelAdmin):
+    list_display   = ('collaborator', 'underskill', 'underskill_level')
+    ordering       = ('id', )
+
 @admin.register(PersonnalityLevel)
 class PersonnalityLevelAdmin(admin.ModelAdmin):
     list_display   = ('collaborator', 'personnality', 'personnality_level')
+    ordering       = ('id', )
+
+@admin.register(UnderPersonnalityLevel)
+class UnderPersonnalityLevelAdmin(admin.ModelAdmin):
+    list_display   = ('collaborator', 'underpersonnality', 'underpersonnality_level')
     ordering       = ('id', )
 
 @admin.register(Collaborator)

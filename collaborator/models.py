@@ -122,6 +122,20 @@ class Personnality(models.Model):
         return self.name
 
 
+class UnderPersonnality(models.Model):
+    
+    name = models.CharField(max_length=100)
+    color = ColorField(default='#FF0000')
+    mother_personnality = models.ForeignKey(Personnality, related_name="under_personnalities", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _("Sous-trait de personnalité")
+        verbose_name_plural = _("Sous-traits de personnalité")
+
+    def __str__(self):
+        return self.name
+
+
 class Skill(models.Model):
     
     name = models.CharField(max_length=100)
@@ -135,19 +149,35 @@ class Skill(models.Model):
         return self.name
 
 
+class UnderSkill(models.Model):
+    
+    name = models.CharField(max_length=100)
+    color = ColorField(default='#FF0000')
+    mother_skill = models.ForeignKey(Skill, related_name="under_skills", on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = _("Sous-compétence")
+        verbose_name_plural = _("Sous-compétences")
+
+    def __str__(self):
+        return self.name
+
 
 class Collaborator(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    picture = models.ImageField(upload_to="profile_pictures")
+    picture = models.ImageField(upload_to="profile_pictures", default=None, null=True)
     job = models.CharField(null=True, max_length=200)
     arrival_date = models.DateField(auto_now=True)
     hobbies = models.ManyToManyField(Hobby, related_name="hobbies")
     projects = models.ManyToManyField(Project, related_name="members", through="Role")
     personnality_level = models.ManyToManyField(Personnality, related_name="is_caracterised_by", through="PersonnalityLevel")
+    underpersonnality_level = models.ManyToManyField(UnderPersonnality, related_name="precisely_caracterised_by", through="UnderPersonnalityLevel")
     value_level = models.ManyToManyField(Value, related_name="owner", through="ValueLevel")
     skill_level = models.ManyToManyField(Skill, related_name="can", through="SkillLevel")
+    underskill_level = models.ManyToManyField(UnderSkill, related_name="precisely_can", through="UnderSkillLevel")
     visited_concepts_list = models.ManyToManyField(Concept, related_name="explorers", through="ExplorationDate")
     recommended_concepts = models.ManyToManyField(Concept, related_name="pretenders")
+    deepself_score = models.FloatField(default=0.0)
     company = models.ForeignKey(Company, null=True, related_name="employees", on_delete=models.CASCADE)
     
 
@@ -186,6 +216,31 @@ class SkillLevel(models.Model):
         return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.skill_level, self.skill.name)
 
 
+class UnderSkillLevel(models.Model):
+    underskill_level = models.FloatField(default=0.0)
+    underskill = models.ForeignKey(UnderSkill, related_name='levels', on_delete=models.CASCADE)
+    collaborator = models.ForeignKey(Collaborator, on_delete=models.CASCADE)    
+
+    class Meta:
+        verbose_name = _("Niveau de Sous-compétence")
+        verbose_name_plural = _("Niveaux de Sous-compétences")
+
+    def __str__(self):
+        return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.underskill_level, self.underskill.name)
+
+class UnderPersonnalityLevel(models.Model):
+    underpersonnality_level = models.FloatField(default=0.0)
+    underpersonnality = models.ForeignKey(UnderPersonnality, on_delete=models.CASCADE)
+    collaborator = models.ForeignKey(Collaborator, on_delete=models.CASCADE)    
+
+    class Meta:
+        verbose_name = _("Niveau de Sous-trait de personnalité")
+        verbose_name_plural = _("Niveaux de Sous-traits de personnalité")
+
+    def __str__(self):
+        return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.underpersonnality_level, self.underpersonnality.name)
+
+
 class PersonnalityLevel(models.Model):
     personnality_level = models.FloatField(default=0.0)
     personnality = models.ForeignKey(Personnality, on_delete=models.CASCADE)
@@ -194,6 +249,9 @@ class PersonnalityLevel(models.Model):
     class Meta:
         verbose_name = _("Niveau de Trait de personnalité")
         verbose_name_plural = _("Niveaux de Traits de personnalité")
+
+    def underLevels(self):
+        return UnderPersonnalityLevel.objects.filter(underpersonnality__in = self.personnality.under_personnalities.all(), collaborator=self.collaborator)
 
     def __str__(self):
         return "{0} {1} a {2}% de {3}".format(self.collaborator.user.first_name, self.collaborator.user.last_name, self.personnality_level, self.personnality.name)

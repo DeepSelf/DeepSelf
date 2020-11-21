@@ -3,24 +3,24 @@
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="{% static 'js/waypoints/lib/noframework.waypoints.min.js' %}"></script>
 
 <div class="ui" id="profile_picture">
   <img class="ui medium circular image" src="" />
 </div>
 
 <div class="ui" id="general_infos">
-  <img class="ui small image" src="{% static 'pictures/user.png' %}" />
-  <!-- <h2>Informations générales</h2> -->
-  <ul class="ui" id="global_infos_ul">
-    <li>Nom: {{collab.user.first_name}} {{collab.user.last_name}}</li>
-    <li>Fonction: {{collab.job}}</li>
-    <li>
-      centres d'intérêt:
-      <ul class="ui" id="hobbies_list">
-        {% for hobby in collab.hobbies.all %} <li>{{hobby.name}}</li> {% endfor %}
-      </ul>
-    </li>
-  </ul>
+  <img class="ui small image" src="{% static 'pictures/user.png' %}"/>
+  <div id="global_infos">
+    <h1 id="name_profile">{{collab.user.first_name}} {{collab.user.last_name}}</h1>
+    <h3>{{collab.job}} | {{collab.company}}</h3>
+  </div>
+  <div id="hobbies">
+    <h3>centres d'intérêt:</h3>
+    <ul class="ui" id="hobbies_list" style="list-style: none; padding-left: 50px; padding-right: 50px;">
+      {% for hobby in collab.hobbies.all %} <li><h4>{{hobby.name}}</h4></li> {% endfor %}
+    </ul>
+  </div>
 </div>
 
 <div class="ui divider"></div>
@@ -31,7 +31,7 @@
     {% for project, roles_list in dico_projects.items %}
     <li>
       <a href="{% url 'project' project.id %}">
-        <button class="ui button" style="width: 100%; margin: 2px;">
+        <button class="ui button bigger-hover" style="width: 100%; margin: 2px;">
           <strong>{{project.name}}</strong>
           {% for role in roles_list%}
           - {{role}}
@@ -48,20 +48,36 @@
 <div class="ui" id="big_five">
   <h2>Personnalité</h2>
   {% for personnality_level in personnality_levels %}
-    <div class="ui progress" data-percent="{{personnality_level.personnality_level}}">
-    <div class="bar" style="width: {{personnality_level.personnality_level}}%; background-color: {{personnality_level.personnality.color}}">
-      <div class="progress">{{personnality_level.personnality_level}}</div>
-    </div>
-    <div class="label">{{personnality_level.personnality.name}}</div>
+    <div class="personnality_global parent-develop">
+      <div class="ui progress" data-percent="{{personnality_level.personnality_level}}">
+        <div class="bar bar-to-fill-scroll" style="background-color: {{personnality_level.personnality.color}}">
+          <div class="progress">{{personnality_level.personnality_level}}</div>
+        </div>
+        <div class="label">{{personnality_level.personnality.name}}</div>
+      </div>
+      <div class="under_personnalities develop-hover bars-to-develop" develop-level="1-*-0">
+        <div class="blank" style="background-color: {{personnality_level.personnality.color}}"></div>
+        <div class="under_list">
+          {% for underpersonnality_level in personnality_level.underLevels %}
+            <div class="ui progress under-progress" data-percent="{{underpersonnality_level.underpersonnality_level}}">
+              <div class="bar bar-to-fill-appear" style="background-color: {{underpersonnality_level.underpersonnality.color}}">
+                <div class="progress">{{underpersonnality_level.underpersonnality_level}}</div>
+              </div>
+              <div class="label">{{underpersonnality_level.underpersonnality.name}}</div>
+            </div>  
+          {% endfor %}
+        </div>
+      </div>
     </div>
   {% endfor %}
 </div>
 
 <div class="ui divider"></div>
 
+
 <div class="ui" id="values">
   <h2>Valeurs</h2>
-  <div id="values_container" style="width:55%">
+  <div id="values_container">
     <canvas id="values_chart"></canvas>
 
      <script>
@@ -77,14 +93,23 @@
             labels: {{ values|safe }}
           },
           options: {
-            responsive: true
+            responsive: true,
+            legend: {
+              position: 'right'
+            }
           }
         };
-
-        window.onload = function() {
-          var ctx = document.getElementById('values_chart').getContext('2d');
-          window.myPie = new Chart(ctx, config);
-        };
+        var ctx = document.getElementById('values_chart').getContext('2d');
+        window.myPie = null;
+        var chart_waypoint = new Waypoint({
+          element: document.getElementById('values_container'),
+          handler: function(direction) {
+            if (window.myPie === null) {
+              window.myPie = new Chart(ctx, config);
+            }
+          },
+          offset: '100%'
+        })
 
       </script>
 
@@ -94,11 +119,16 @@
 
 <div class="ui divider"></div>
 
+<script>
+  
+</script>
+
+
 <div class="ui" id="skills">
   <h2>Compétences</h2>
   {% for skill_level in skill_levels %}
     <div class="ui progress" data-percent="{{skill_level.skill_level}}">
-    <div class="bar" style="width: {{skill_level.skill_level}}%; background-color: {{skill_level.skill.color}}">
+    <div class="bar bar-to-fill-scroll" style="background-color: {{skill_level.skill.color}}">
       <div class="progress">{{skill_level.skill_level}}</div>
     </div>
     <div class="label">{{skill_level.skill.name}}</div>
@@ -110,6 +140,7 @@
 
 <div class="ui" id="deepself_score">
   <h2>Score DeepSelf</h2>
+  <p id="score">{{collab.deepself_score}}/100</p>
 </div>
 
 

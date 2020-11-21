@@ -35,7 +35,7 @@ def profile(request):
     colors = [value.color for value in collab.value_level.all()]
     skill_levels = SkillLevel.objects.filter(collaborator=collab)
     personnality_levels = PersonnalityLevel.objects.filter(collaborator=collab)
-    print(skill_levels)
+    p = personnality_levels[0]
     return render(request, 'collaborator/profile.html', locals())
 
 @login_required

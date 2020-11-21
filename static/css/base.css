@@ -17,9 +17,41 @@ div.ui.footer {
 
 #big_five,
 #skills {
-  max-width: 50vw;
+  max-width: 60vw;
   min-width: 500px;
   align-self: center;
+}
+
+.bigger-hover:hover {
+    transform: scale(1.01);
+}
+
+.develop-hover {
+    padding-bottom: 1.5em;
+}
+
+.bar-to-fill-scroll {
+    width: 0;
+}
+
+.bar-to-fill-appear {
+    width: 0;
+}
+
+
+.personnality_global {
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+
+.blank {
+    width: 2px;
+    margin-left: 10%;
+    margin-right: 5%;
+}
+
+.under_list {
+    flex: 1;
 }
 
 #big_five > h2,
@@ -31,12 +63,22 @@ div.ui.footer {
   text-align: center;
 }
 
+#deepself_score {
+    margin-bottom: 50px;
+}
 
+#values,
 #projects {
     width: 100%;
-    max-width: 75vw;
+    max-width: 60vw;
     min-width: 500px;
     align-self: center;
+}
+
+#score {
+    font-size: 50px;
+    color: red;
+    text-align: center;
 }
 
 .buttons-container {
@@ -96,10 +138,26 @@ div.ui.footer {
 }
 
 #general_infos {
-  display: inline-flex;
+    display: flex;
+    justify-content: center;
+}
+
+#global_infos{
+    margin-left: 10px;
+    margin-right: 10px;
+    min-width: 400px;
+    max-width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#name_profile {
+    font-size: 50px;
 }
 
 #general_infos .image {
-  border: 1px solid black;
-  padding: 5px;
+    border: 1px solid black;
+    padding: 5px;
 }
