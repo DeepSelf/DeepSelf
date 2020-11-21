@@ -19,18 +19,20 @@ class ValueAdmin(admin.ModelAdmin):
     ordering       = ('id', )
     search_fields  = ('name',)
 
+class UnderPersonnalityInline(admin.TabularInline):
+    model = UnderPersonnality
+    fieldsets = (
+        (None, {"fields": ('name', 'color'),}),
+    )
+    
+    extra = 0
+
 @admin.register(Personnality)
 class PersonnalityAdmin(admin.ModelAdmin):
     list_display   = ('name',)
     ordering       = ('id', )
     search_fields  = ('name',)
-
-@admin.register(UnderPersonnality)
-class UnderPersonnalityAdmin(admin.ModelAdmin):
-    list_display   = ('name','mother_personnality')
-    ordering       = ('id', )
-    search_fields  = ('name',)
-
+    inlines = (UnderPersonnalityInline,)
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -59,77 +61,110 @@ class ProjectAdmin(admin.ModelAdmin):
     ordering       = ('id', )
     search_fields  = ('name',)
 
+class UnderSkillInline(admin.TabularInline):
+    model = UnderSkill
+    fieldsets = (
+        (None, {"fields": ('name', 'color'),}),
+    )
+    
+    extra = 0
     
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
     list_display   = ('name',)
     ordering       = ('id', )
     search_fields  = ('name',)
+    inlines = (UnderSkillInline,)
 
-@admin.register(UnderSkill)
-class UnderSkillAdmin(admin.ModelAdmin):
-    list_display   = ('name','mother_skill')
-    ordering       = ('id', )
-    search_fields  = ('name',)
+class TaskInline(admin.TabularInline):
+    model = Task
+    fieldsets = (
+        (None, {"fields": ('description',),}),
+    )
+    
+    extra = 0
 
-@admin.register(SkillLevel)
-class SkillLevelAdmin(admin.ModelAdmin):
-    list_display   = ('collaborator', 'skill', 'skill_level')
-    ordering       = ('id', )
+class RoleInline(admin.TabularInline):
+    model = Role
+    fieldsets = (
+        (None, {"fields": ('role_name', 'project'),}),
+    )
+    
+    extra = 0
 
-@admin.register(UnderSkillLevel)
-class UnderSkillLevelAdmin(admin.ModelAdmin):
-    list_display   = ('collaborator', 'underskill', 'underskill_level')
-    ordering       = ('id', )
+class CandidacyInline(admin.TabularInline):
+    model = Candidacy
+    fieldsets = (
+        (None, {"fields": ('role', 'description'),}),
+    )
+    
+    extra = 0
 
-@admin.register(PersonnalityLevel)
-class PersonnalityLevelAdmin(admin.ModelAdmin):
-    list_display   = ('collaborator', 'personnality', 'personnality_level')
-    ordering       = ('id', )
+class PersonnalityLevelInline(admin.TabularInline):
+    model = PersonnalityLevel
+    fieldsets = (
+        (None, {"fields": ('personnality', 'personnality_level'),}),
+    )
+    readonly_fields = ('personnality',)
+    
+    extra = 0
 
-@admin.register(UnderPersonnalityLevel)
-class UnderPersonnalityLevelAdmin(admin.ModelAdmin):
-    list_display   = ('collaborator', 'underpersonnality', 'underpersonnality_level')
-    ordering       = ('id', )
+class UnderPersonnalityLevelInline(admin.TabularInline):
+    model = UnderPersonnalityLevel
+    fieldsets = (
+        (None, {"fields": ('underpersonnality', 'underpersonnality_level'),}),
+    )
+    
+    extra = 0
+
+class ValueLevelInline(admin.TabularInline):
+    model = ValueLevel
+    fieldsets = (
+        (None, {"fields": ('value', 'value_level'),}),
+    )
+    
+    extra = 0
+
+class SkillLevelInline(admin.TabularInline):
+    model = SkillLevel
+    fieldsets = (
+        (None, {"fields": ('skill', 'skill_level'),}),
+    )
+    
+    extra = 0
+
+class UnderSkillLevelInline(admin.TabularInline):
+    model = UnderSkillLevel
+    fieldsets = (
+        (None, {"fields": ('underskill', 'underskill_level'),}),
+    )
+    
+    extra = 0
+
+class ExplorationDateInline(admin.TabularInline):
+    model = ExplorationDate
+    fieldsets = (
+        (None, {"fields": ('concept', 'date'),}),
+    )
+    readonly_fields = ('concept','date')
+    extra = 0
+
 
 @admin.register(Collaborator)
 class CollaboratorAdmin(admin.ModelAdmin):
     list_display   = ('user','job', )
     ordering       = ('user', )
     search_fields  = ('job',)
-
-
-@admin.register(ValueLevel)
-class ValueLevelAdmin(admin.ModelAdmin):
-    list_display   = ('collaborator', 'value', 'value_level')
-    ordering       = ('id', )
-
-@admin.register(ExplorationDate)
-class ExplorationDateAdmin(admin.ModelAdmin):
-    list_display   = ('collaborator','concept', 'date')
-    ordering       = ('id', )
-
-@admin.register(Role)
-class RoleAdmin(admin.ModelAdmin):
-    list_display   = ('collaborator','role_name', 'project')
-    ordering       = ('id', )
-
+    inlines = (PersonnalityLevelInline,UnderPersonnalityLevelInline, ValueLevelInline, SkillLevelInline, UnderSkillLevelInline, RoleInline, CandidacyInline, ExplorationDateInline)
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
     list_display   = ('description','role')
-    ordering       = ('id', )
-
-
-@admin.register(Candidacy)
-class CandidacyAdmin(admin.ModelAdmin):
-    list_display   = ('role','collaborator', 'description')
-    ordering       = ('id', )
-
+    ordering       = ('id',)
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     list_display   = ('name',)
-    ordering       = ('id', )
+    ordering       = ('id',)
     search_fields  = ('name',)
 
