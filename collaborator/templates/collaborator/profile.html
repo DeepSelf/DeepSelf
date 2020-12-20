@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Deepself - Profile{% endblock %}
+
+{% block css_file %}<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}" />{% endblock %}
+
 {% block content %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-<script src="{% static 'js/waypoints/lib/noframework.waypoints.min.js' %}"></script>
 
 <div class="ui" id="profile_picture">
   <img class="ui medium circular image" src="" />
@@ -34,7 +36,7 @@
         <button class="ui button bigger-hover" style="width: 100%; margin: 2px;">
           <strong>{{project.name}}</strong>
           {% for role in roles_list%}
-          - {{role}}
+          - {{role.role_name}}
           {% endfor %}
         </button>
       </a>

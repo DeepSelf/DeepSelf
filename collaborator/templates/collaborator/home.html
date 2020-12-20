@@ -1,15 +1,16 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
-<!-- <h1>
-  Bienvenue {% if user.is_authenticated %}{{user.first_name}} {{user.last_name}}{% endif %} sur le
-  site de DeepFace
-</h1> -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Deepself - Home{% endblock %}
+
+{% block content %}
 
 {% if user.is_authenticated %}
 <div class="ui profile right">
   <div class="name">{{user.first_name}} {{user.last_name}}</div>
   <div>
     <a href="{% url 'profile' %}">
-      <img class="ui tiny image circular" src="{% static 'pictures/user.png' %}" />
+      <img class="ui tiny image circular bigger-hover" src="{% static 'pictures/user.png' %}" />
     </a>
   </div>
 </div>
@@ -27,8 +28,8 @@
 </div>
 
 <div class="ui container buttons-container">
-  <button class="ui button massive">Je m'informe</button>
-  <button class="ui button massive">Je m'engage</button>
-  <button class="ui button massive">J'attends un diagnostic</button>
+  <button class="ui button massive"><a href="{% url 'dev_mod' %}">Je m'informe</a></button>
+  <button class="ui button massive"><a href="{% url 'collec_init' %}">Je m'engage</a></button>
+  <button class="ui button massive"><a href="{% url 'chatbot' %}">J'attends un diagnostic</a></button>
 </div>
 {% endblock content %} {% block footer %} {% endblock footer %}

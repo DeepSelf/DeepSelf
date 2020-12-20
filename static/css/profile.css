@@ -1,0 +1,61 @@
+#content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.personnality_global {
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+
+.blank {
+    width: 2px;
+    margin-left: 10%;
+    margin-right: 5%;
+}
+
+#big_five > h2,
+#projects > h2,
+#values > h2,
+#skills > h2,
+#deepself_score h2 {
+  width: 100%;
+  text-align: center;
+}
+
+#deepself_score {
+    margin-bottom: 50px;
+}
+
+#values,
+#projects {
+    width: 100%;
+    max-width: 60vw;
+    min-width: 500px;
+    align-self: center;
+}
+
+#score {
+    font-size: 50px;
+    color: red;
+    text-align: center;
+}
+
+
+
+#general_infos {
+    display: flex;
+    justify-content: center;
+}
+
+#global_infos{
+    margin-left: 10px;
+    margin-right: 10px;
+    min-width: 400px;
+    max-width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}

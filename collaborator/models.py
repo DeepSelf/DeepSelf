@@ -108,6 +108,9 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+    def get_roles(self, collab):
+        return Role.objects.filter(project=self, collaborator=collab)
+
 
 class Personnality(models.Model):
     

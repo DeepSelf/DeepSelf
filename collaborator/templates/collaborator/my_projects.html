@@ -2,15 +2,26 @@
 
 {% load static %}
 
+{% block title %}Deepself - Projects{% endblock %}
+
 {% block content %}
 
 <button><a href="{% url 'new_project' %}">Je propose un projet</a></button>
 
 <div id="your_projects">
-    <h1>Voici vos projets</h1>
-    <ul id="your_projects_ul">
-        {% for project in collab.projects.distinct %}
-            <li><a href="{% url 'project' project.id %}">{{project.name}}</a></li>
+    <h1>Voici les projets auxquels vous participez</h1>
+    <ul class="ui" id="projects_list" style="list-style: none; padding-left: 50px; padding-right: 50px;">
+        {% for project, roles_list in dico_projects.items %}
+        <li>
+        <a href="{% url 'project' project.id %}">
+            <button class="ui button bigger-hover" style="width: 100%; margin: 2px;">
+            <strong>{{project.name}}</strong>
+            {% for role in roles_list%}
+            - {{role.role_name}}
+            {% endfor %}
+            </button>
+        </a>
+        </li>
         {% endfor %}
     </ul>
 </div>

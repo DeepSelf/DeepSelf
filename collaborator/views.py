@@ -22,13 +22,7 @@ def profile(request):
     '''
 
     collab = request.user.collaborator
-    roles = Role.objects.filter(collaborator=collab)
-    dico_projects = {}
-    for role in roles:
-        if role.project in dico_projects.keys():
-            dico_projects[role.project] += [role.role_name]
-        else:
-            dico_projects[role.project] = [role.role_name]
+    dico_projects = {project: project.get_roles(collab) for project in collab.projects.all()}
     value_levels = ValueLevel.objects.filter(collaborator=collab)
     values = [value.name for value in collab.value_level.all()]
     levels = [value_level.value_level for value_level in value_levels]
@@ -65,6 +59,7 @@ def collective_initiative(request):
     '''
 
     collab = request.user.collaborator
+    dico_projects = {project: project.get_roles(collab) for project in collab.projects.all()}
     return render(request, 'collaborator/my_projects.html', locals())
 
 @login_required
@@ -80,14 +75,17 @@ def other_projects(request):
             if form.cleaned_data['category'+str(category.id)]:
                 selected_categories += [category]
         if len(selected_categories) == 0:
-            projects_whithout = Project.objects.exclude(id__in=[project.id for project in request.user.collaborator.projects.all()])
+            projects_whithout = Project.objects.exclude(id__in=[project.id for project in request.user.collaborator.projects.all()]).filter(company=request.user.collaborator.company)
         else:
             proj_ids = []
             for category in selected_categories:
                 for project in category.contains.all():
                     if not project.id in proj_ids:
                         proj_ids += [project.id]
-        projects_whithout = Project.objects.exclude(id__in=[project.id for project in request.user.collaborator.projects.all()]).filter(id__in = proj_ids)    
+            projects_whithout = Project.objects.exclude(id__in=[project.id for project in request.user.collaborator.projects.all()]).filter(id__in = proj_ids, company=request.user.collaborator.company)
+    else:
+        projects_whithout = Project.objects.exclude(id__in=[project.id for project in request.user.collaborator.projects.all()]).filter(company=request.user.collaborator.company)
+    print(form.is_valid())
     return render(request, 'collaborator/other_projects.html', locals())
 
 @login_required

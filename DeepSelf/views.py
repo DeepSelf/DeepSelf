@@ -3,6 +3,14 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm
+from django import template
+
+register = template.Library()
+
+@register.simple_tag
+def call_method(obj, method_name, *args):
+    method = getattr(obj, method_name)
+    return method(*args)
 
 def login_view(request):
     '''
